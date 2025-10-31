@@ -1,36 +1,174 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚗 Highway Delite — Book Your Adventure Experiences  
 
-## Getting Started
+**A modern, dynamic adventure booking platform built with Next.js, Prisma, and Supabase.**  
+Find curated travel experiences, view details, apply promo codes, and confirm bookings seamlessly — all powered by dynamic data.
 
-First, run the development server:
+---
 
+## 🌐 Live Demo  
+> 🎯 **Deployed on Vercel**  
+👉 [View Live Site](https://your-vercel-url.vercel.app) *(replace with your Vercel deployment link)*  
+
+---
+
+## 🖼️ Project Preview  
+
+### 🏠 Homepage  
+Browse and search dynamic experiences from Supabase.  
+![Homepage Preview](public/screenshots/homepage.png)
+
+### 📄 Experience Details  
+Each experience has its own dynamic `/experiences/[id]` page.  
+![Experience Details](public/screenshots/experience-detail.png)
+
+### 💳 Checkout  
+Apply promo codes, calculate totals, and confirm bookings.  
+![Checkout Page](public/screenshots/checkout.png)
+
+### ✅ Confirmation  
+Booking confirmation with unique reference ID.  
+![Confirmation Page](public/screenshots/confirmation.png)
+
+---
+
+## ✨ Features  
+
+- ✅ **Dynamic Experiences:** Pulled live from Supabase via Prisma.  
+- 🔍 **Smart Search:** Filter by title, description, or location.  
+- 📱 **Responsive Design:** Optimized for mobile and desktop.  
+- 💰 **Promo Code Validation:** Dynamic discount logic.  
+- 💳 **Booking Flow:** Calculates subtotal, taxes, and final total.  
+- 🧾 **Confirmation Page:** Shows unique reference ID post-booking.  
+- ⚙️ **API Routes:** Modular Next.js API for experiences, bookings, and promos.
+
+---
+
+## 🧠 Tech Stack  
+
+| Category | Technology |
+|-----------|-------------|
+| **Frontend** | Next.js 14 (App Router), React, TypeScript |
+| **Styling** | Tailwind CSS, ShadCN UI |
+| **Database** | Supabase (PostgreSQL) |
+| **ORM** | Prisma |
+| **UX Enhancements** | react-spinners, Sonner (toasts) |
+| **Hosting** | Vercel |
+
+---
+
+## ⚙️ Setup Instructions  
+
+### 1️⃣ Clone the Repository  
 ```bash
+git clone https://github.com/your-username/highway-delite.git
+cd highway-delite
+
+
+2️⃣ Install Dependencies
+npm install
+
+3️⃣ Configure Environment Variables
+
+Create a .env file in your project root and add:
+
+DATABASE_URL="postgresql://your-user:your-password@your-host:6543/postgres"
+NEXT_PUBLIC_SITE_URL="http://localhost:3000"
+
+If using Supabase:
+
+DATABASE_URL="postgresql://postgres:yourpassword@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres"
+
+4️⃣ Prisma Setup
+Push schema to your database:
+npx prisma db push
+
+Generate Prisma client:
+npx prisma generate
+
+(Optional) Seed initial data:
+
+If you have a prisma/seed.ts:
+
+npm run seed
+
+5️⃣ Run Development Server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit 👉 http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+6️⃣ Build for Production
+npm run build
+npm start
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+7️⃣ Deploy on Vercel
 
-## Learn More
+To deploy directly from CLI:
 
-To learn more about Next.js, take a look at the following resources:
+vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Or connect your GitHub repo via the Vercel Dashboard at https://vercel.com
+.
+.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+📂 Folder Structure
+src/
+ ├─ app/
+ │   ├─ api/
+ │   │   ├─ experiences/
+ │   │   │   └─ /[id]/route.ts          # Fetch individual experiences
+ │   │   │   └─ route.ts               # Fetch all experiences
+ │   │   ├─ experiences/[id]/           # Dynamic details API
+ │   │   ├─ bookings/route.ts            # Booking API
+ │   │   └─ promo/validate/route.ts     # Promo code validation
+ │   ├─ experiences/[id]/page.tsx       #Details Page
+ │   ├─ confirmation/page.tsx           #Result Page
+ │   ├─ checkout/page.tsx               #Checkout Page
+ │   ├─ layout.tsx
+ │   ├─ page.tsx                  # Homepage
+ ├─ components/
+ │   ├─ ExperienceCard.tsx
+ │   ├─ Header.tsx
+ │   ├─ PriceSummary.tsx
+ │   └─ ui/                       # ShadCN components
+ ├─ prisma/
+ │   ├─ schema.prisma
+ │   └─ seed.ts
+ ├─ public/
+ │   ├─ favicon.ico
+ │   ├─ logo.png
+ │   └─ screenshots/
+ ├─ lib/
+ │   └─ prisma.ts
+ ├─ types/
+ │   └─ index.ts
+ └─ .env
 
-## Deploy on Vercel
+🧩 Key API Endpoints
+Endpoint	Method	Description
+/api/experiences	GET	Fetch all experiences
+/api/experiences/[id]	GET	Fetch single experience by ID
+/api/bookings	POST	Store booking details
+/api/promo/validate	POST	Validate promo codes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🧾 For Database Schema go to (prisma/schema.prisma)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+💡 Developer Notes
+
+Run Prisma Studio to view/edit data manually:
+
+npx prisma studio
+
+
+Opens at 👉 http://localhost:5555
+
+All pages (Home, Details, Checkout, Confirmation) fetch live data from Supabase, not hardcoded.
+
+🧾 License
+
+This project was developed as part of an academic assignment.
+You are free to reuse or modify for educational and demo purposes.
+
+🧭 Author
+
+Prajakta Ayare
+Mumbai, India

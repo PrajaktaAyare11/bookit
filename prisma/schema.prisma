@@ -1,0 +1,63 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+//
+// 🧳 Experience Table
+//
+model Experience {
+  id             Int          @id @default(autoincrement())
+  title          String
+  location       String
+  description    String
+  image          String
+  about          String
+  price          Float         // e.g., 999.00
+  taxPercent     Float         @default(6.0)
+  slots          Int
+  availableDates DateTime[]    // ✅ FIXED: use DateTime instead of Date
+  availableTimes String[]
+  createdAt      DateTime      @default(now())
+
+  bookings       Booking[]
+}
+
+//
+// 🧾 Booking Table
+//
+model Booking {
+  id            Int         @id @default(autoincrement())
+  refId         String      @unique
+  name          String
+  email         String
+  experienceId  Int
+  selectedDate  DateTime
+  selectedTime  String
+  quantity      Int
+  subtotal      Float        // 999.00 × qty
+  taxAmount     Float        // 59.94
+  totalAmount   Float        // 1058.94
+  promoCode     String?
+  status        String       @default("confirmed")
+  createdAt     DateTime     @default(now())
+
+  experience    Experience   @relation(fields: [experienceId], references: [id])
+}
+
+//
+// 💸 Promo Table
+//
+model Promo {
+  id           Int      @id @default(autoincrement())
+  code         String   @unique
+  discountPct  Float?   // 10.0 = 10%
+  flatAmount   Float?   // 100.0 = ₹100 off
+  isActive     Boolean  @default(true)
+  expiresAt    DateTime?
+}
