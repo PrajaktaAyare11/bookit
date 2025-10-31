@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ExperienceCard from "@/components/ExperienceCard";
 import { Experience } from "@/types";
 import { BarLoader } from "react-spinners";
 
-export default function HomePage() {
+function HomeContent() {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
   
@@ -16,14 +16,14 @@ export default function HomePage() {
 
   // Fetch experiences from API
   useEffect(() => {
-    fetch('/api/experiences')
-      .then(res => res.json())
-      .then(data => {
+    fetch("/api/experiences")
+      .then((res) => res.json())
+      .then((data) => {
         setExperiences(data);
         setFilteredExperiences(data);
         setLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Failed to fetch experiences:", error);
         setLoading(false);
       });
@@ -32,10 +32,11 @@ export default function HomePage() {
   // Filter experiences based on search
   useEffect(() => {
     if (searchQuery) {
-      const filtered = experiences.filter((exp) =>
-        exp.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        exp.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        exp.description.toLowerCase().includes(searchQuery.toLowerCase())
+      const filtered = experiences.filter(
+        (exp) =>
+          exp.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          exp.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          exp.description.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredExperiences(filtered);
     } else {
@@ -43,7 +44,7 @@ export default function HomePage() {
     }
   }, [searchQuery, experiences]);
 
-   if (loading) {
+  if (loading) {
     return (
       <div>
         <BarLoader className="mt-4" width={"100%"} color="#facc15" />
@@ -63,7 +64,7 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* Experiences Grid - 4 columns on large screens */}
+      {/* Experiences Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 place-items-center sm:place-items-start">
         {filteredExperiences.map((experience) => (
           <ExperienceCard key={experience.id} experience={experience} />
@@ -78,5 +79,20 @@ export default function HomePage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense
+      fallback={
+        <div>
+          <BarLoader className="mt-4" width={"100%"} color="#facc15" />
+          <p className="text-gray-500 text-center">Loading page...</p>
+        </div>
+      }
+    >
+      <HomeContent />
+    </Suspense>
   );
 }
