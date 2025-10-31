@@ -5,16 +5,14 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    console.log("🔍 Connecting to DB...");
     const experiences = await prisma.experience.findMany({
       orderBy: { id: "asc" },
     });
-    console.log("✅ DB Connected. Found", experiences.length, "experiences.");
     return NextResponse.json(experiences);
-  } catch (error) {
-    console.error("❌ Prisma DB connection error:", error);
+  } catch (error: any) {
+    console.error("Database fetch error:", error);
     return NextResponse.json(
-      { error: "Database connection failed", details: String(error) },
+      { error: "Database connection failed", details: error.message },
       { status: 500 }
     );
   }

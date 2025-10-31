@@ -16,18 +16,24 @@ function HomeContent() {
 
   // Fetch experiences from API
   useEffect(() => {
-    fetch("/api/experiences")
-      .then((res) => res.json())
-      .then((data) => {
+  fetch('/api/experiences')
+    .then(res => res.json())
+    .then(data => {
+      if (Array.isArray(data)) {
         setExperiences(data);
         setFilteredExperiences(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch experiences:", error);
-        setLoading(false);
-      });
-  }, []);
+      } else {
+        console.error("Unexpected data:", data);
+        setExperiences([]);
+        setFilteredExperiences([]);
+      }
+      setLoading(false);
+    })
+    .catch(error => {
+      console.error("Failed to fetch experiences:", error);
+      setLoading(false);
+    });
+}, []);
 
   // Filter experiences based on search
   useEffect(() => {
