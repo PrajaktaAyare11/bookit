@@ -6,7 +6,7 @@ Find curated travel experiences, view details, apply promo codes, and confirm bo
 ---
 
 ## 🌐 Live Demo  
-> 🎯 **Deployed on Vercel**  
+> 🎯 **Deployed on Railway**  
 👉 [View Live Site](https://bookit-production-4e5f.up.railway.app/) 
 
 ---
